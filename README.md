@@ -40,9 +40,9 @@ A-COMPLETER.md                ce qu'il reste à fournir ou à décider
 
    | Statut | Offre | Cash | Commission du setter |
    |---|---|---|---|
-   | `monthly` | Mensuel Builder | 250 $ | 10 % = 25,00 $ |
+   | `monthly` | Mensuel Builder | 200 $ | 10 % = 20,00 $ |
    | `yearly` | Annuel Starter | 250 $ | 12,5 % = 31,25 $ |
-   | `yearly_builder` | Annuel Builder | 450 $ | 15 % = 67,50 $ |
+   | `yearly_builder` | Annuel Builder | 475 $ | 15 % = 71,25 $ |
 
 4. Dans la fiche, **Créer l'accès** : la base crée une invitation à usage unique (14 jours)
    pour la formule de l'offre vendue (Mensuel Builder → modules 1 à 8, Annuel Starter → 1 à

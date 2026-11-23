@@ -63,9 +63,9 @@ base Sirius.
 
 | Code | Libellé | Modules | Offre vendue dans le CRM |
 |---|---|---|---|
-| `mensuel` | Mensuel Builder | 1 à 8 | `monthly` (250 $, 10 %) |
+| `mensuel` | Mensuel Builder | 1 à 8 | `monthly` (200 $, 10 %) |
 | `annuel` | Annuel Starter | 1 à 14 | `yearly` (250 $, 12,5 %) |
-| `annuel_builder` | Annuel Builder | 1 à 20 | `yearly_builder` (450 $, 15 % = 67,50 $) |
+| `annuel_builder` | Annuel Builder | 1 à 20 | `yearly_builder` (475 $, 15 % = 71,25 $) |
 
 Les numéros comptent les modules du programme dans l'ordre de `position`, sans les
 introductions (`is_intro`) ni les bonus (`is_bonus`). Un module inséré est coché tout seul

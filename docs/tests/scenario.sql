@@ -127,14 +127,14 @@ update public.leads set status = 'yearly_builder', cash_collecte = 1, commission
 select first_name, status, cash_collecte, commission, closed_at is not null as vente_datee
   from public.leads where email = 'camille@test.local';
 do $$ begin
-  assert (select cash_collecte from public.leads where email = 'camille@test.local') = 450, 'Annuel Builder = 450 $';
-  assert (select commission from public.leads where email = 'camille@test.local') = 67.50, 'commission 15 % = 67,50 $';
+  assert (select cash_collecte from public.leads where email = 'camille@test.local') = 475, 'Annuel Builder = 475 $';
+  assert (select commission from public.leads where email = 'camille@test.local') = 71.25, 'commission 15 % = 71,25 $';
 end $$;
 select public.crm_stats(null, null, auth.uid(), 'formulaire', 'starter') as mes_chiffres;
 select public.classement_setters(:auj, :auj, 'starter') -> 'lignes' -> 0 as premier_du_classement;
 do $$ begin
   assert (public.classement_setters((now() at time zone 'Europe/Paris')::date, (now() at time zone 'Europe/Paris')::date, 'starter')
-          -> 'lignes' -> 0 ->> 'cash')::numeric = 450, 'le setter est premier du classement avec 450 $';
+          -> 'lignes' -> 0 ->> 'cash')::numeric = 475, 'le setter est premier du classement avec 475 $';
 end $$;
 reset role;
 
@@ -265,7 +265,7 @@ begin
   a := public.creer_acces_espace((select id from public.leads where email = 'lou@test.local'));
   assert a->>'plan_code' = 'annuel', 'yearly → annuel';
   update public.leads set status = 'monthly' where email = 'lou@test.local';
-  assert (select commission from public.leads where email = 'lou@test.local') = 25.00, 'Mensuel Builder : 25 $';
+  assert (select commission from public.leads where email = 'lou@test.local') = 20.00, 'Mensuel Builder : 20 $';
   b := public.creer_acces_espace((select id from public.leads where email = 'lou@test.local'));
   assert b->>'plan_code' = 'mensuel', 'monthly → mensuel';
   assert a->>'token' <> b->>'token', 'nouveau lien pour la nouvelle formule';

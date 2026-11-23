@@ -28,7 +28,7 @@
 - [ ] Lien d'affiliation Base44 d'ACE Club `[À FOURNIR]` (utilisé par l'espace membre et le
       discours des setters ; le CRM ne l'affiche pas).
 - [ ] À VALIDER : les trois offres et commissions reprises telles quelles du CRM Sirius
-      (Mensuel Builder 250 $ / 10 %, Annuel Starter 250 $ / 12,5 %, Annuel Builder 450 $ / 15 %).
+      (Mensuel Builder 200 $ / 10 %, Annuel Starter 250 $ / 12,5 %, Annuel Builder 475 $ / 15 %, confirmé par Martin le 23/11).
 - [ ] À VALIDER : formules de l'espace membre (Mensuel Builder 1-8, Annuel Starter 1-14,
       Annuel Builder 1-20) et le rythme (1 module avant le jour 3, tout au jour 3).
 - [ ] Offre d'accompagnement de fin de programme (`prochaines_etapes`, éteinte) `[À COMPLÉTER]`.

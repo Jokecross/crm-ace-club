@@ -1838,14 +1838,14 @@ const STATUTS = [
 ];
 const LIBELLE = Object.fromEntries(STATUTS);
 /* Le prix de chaque offre, et le taux de commission qui va avec.
-   Mensuel Builder : 250 $, 10 % → 25 $. Annuel Starter : 250 $, 12,5 % → 31,25 $.
-   Annuel Builder : 450 $, 15 % → 67,50 $.
+   Mensuel Builder : 200 $, 10 % → 20 $. Annuel Starter : 250 $, 12,5 % → 31,25 $.
+   Annuel Builder : 475 $, 15 % → 71,25 $.
    Simple affichage : la base impose elle-même montant et commission
    (supabase/INSTALLATION.sql, section des trois offres). */
 const OFFRES = {
-  monthly:        { prix: 250, taux: 0.10 },
+  monthly:        { prix: 200, taux: 0.10 },
   yearly:         { prix: 250, taux: 0.125 },
-  yearly_builder: { prix: 450, taux: 0.15 },
+  yearly_builder: { prix: 475, taux: 0.15 },
 };
 const estVente = (statut) => statut in OFFRES;
 

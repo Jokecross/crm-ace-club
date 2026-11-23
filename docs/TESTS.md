@@ -30,7 +30,7 @@ laisse tourner pour fouiller ; `PGBIN` et `PORT` se changent si besoin.
      attribué ou déjà vendu ;
    - le setter voit le lead libre (origine `tiktok`), le prend (premier appel compté) ; le
      second setter arrive trop tard ;
-   - vente `yearly_builder` : la base impose 450 $ et **67,50 $** de commission, quoi que le
+   - vente `yearly_builder` : la base impose 475 $ et **71,25 $** de commission, quoi que le
      navigateur envoie ; `crm_stats` et `classement_setters` le reflètent ;
    - `creer_acces_espace` : invitation `annuel_builder` (Annuel Builder), même lien si on
      rappelle ; refusée à l'autre setter ;
@@ -42,7 +42,7 @@ laisse tourner pour fouiller ; `PGBIN` et `PORT` se changent si besoin.
    - deux minuits plus tard (jour 3) : les modules 1 à 20 ouverts ; plafond au jour 10 ;
    - l'offre passe en `yearly` après l'inscription : la formule de l'élève suit (14
      modules) ; un lien pas encore utilisé est remplacé quand l'offre change (`monthly` →
-     `mensuel`, 25 $) ;
+     `mensuel`, 20 $) ;
    - `stats_sources` (1 visiteur, 2 vues, 2 formulaires, 2 ventes) et `rapport_pages` avec
      une clé de test (mauvaise clé refusée) ; `formules_recalculer()`.
 4. Troisième passage d'INSTALLATION.sql sur la base remplie, après avoir changé un réglage et
@@ -63,8 +63,8 @@ laisse tourner pour fouiller ; `PGBIN` et `PORT` se changent si besoin.
   ✓ SCÉNARIO OK
 4. Troisième passage sur la base remplie : rien ne doit bouger
   ✓ passage-3-avec-donnees
-  avant : annuel=14 annuel_builder=20 mensuel=8|0|1|camille@test.local:yearly:250.00:31.25 lou@test.local:monthly:250.00:25.00|2|Le premier oui|1/3
-  après : annuel=14 annuel_builder=20 mensuel=8|0|1|camille@test.local:yearly:250.00:31.25 lou@test.local:monthly:250.00:25.00|2|Le premier oui|1/3
+  avant : annuel=14 annuel_builder=20 mensuel=8|0|1|camille@test.local:yearly:250.00:31.25 lou@test.local:monthly:200.00:20.00|2|Le premier oui|1/3
+  après : annuel=14 annuel_builder=20 mensuel=8|0|1|camille@test.local:yearly:250.00:31.25 lou@test.local:monthly:200.00:20.00|2|Le premier oui|1/3
   ✓ données intactes
 5. Remise à zéro
   ✓ plus aucun lead

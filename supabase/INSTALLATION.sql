@@ -4611,9 +4611,9 @@ select (select count(*) from public.presence)    as presences,
 --  Mêmes offres et mêmes commissions que la base dont ce CRM est repris.
 --
 --                     Cash    Setter   Commission du setter
---    Mensuel Builder  250 $   10 %     25,00 $
+--    Mensuel Builder  200 $   10 %     20,00 $
 --    Annuel Starter   250 $   12,5 %   31,25 $
---    Annuel Builder   450 $   15 %     67,50 $
+--    Annuel Builder   475 $   15 %     71,25 $
 --
 --  Statuts : monthly = Mensuel Builder, yearly = Annuel Starter,
 --  yearly_builder = Annuel Builder.
@@ -4639,9 +4639,9 @@ language plpgsql
 as $$
 begin
   new.cash_collecte := case new.status::text
-    when 'monthly'        then 250
+    when 'monthly'        then 200
     when 'yearly'         then 250
-    when 'yearly_builder' then 450
+    when 'yearly_builder' then 475
     else 0
   end;
   new.commission := case new.status::text
@@ -4703,9 +4703,9 @@ create policy "facture deposee" on public.invoices
 -- Les chiffres (crm_stats) et le rapport, dans leur version finale : section K.
 
 -- Vérification : la grille.
-select 'Mensuel Builder' as offre, 250 as cash, round(250 * 0.10, 2) as setter
+select 'Mensuel Builder' as offre, 200 as cash, round(200 * 0.10, 2) as setter
 union all select 'Annuel Starter', 250, round(250 * 0.125, 2)
-union all select 'Annuel Builder', 450, round(450 * 0.15, 2);
+union all select 'Annuel Builder', 475, round(475 * 0.15, 2);
 
 
 
