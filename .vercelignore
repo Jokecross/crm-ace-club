@@ -1,0 +1,13 @@
+# Sans build, Vercel met en ligne tout le dossier. Seuls index.html, rapport.html,
+# img/ et fonts/ doivent être servis : ces fichiers de travail ne doivent jamais
+# être accessibles depuis le site (mots de passe, clés, schéma de la base).
+scripts
+supabase
+docs
+sauvegardes
+README.md
+A-COMPLETER.md
+.gitignore
+.vercelignore
+.env
+.env.*

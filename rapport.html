@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ACE Club — rapport des leads</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#07090F">
+<link rel="icon" type="image/png" href="img/ace-favicon.png">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Archivo';src:url('fonts/archivo-var.woff2') format('woff2');font-weight:700 900;font-stretch:100% 125%;font-display:swap}
+@font-face{font-family:'Inter';src:url('fonts/inter-var.woff2') format('woff2');font-weight:400 700;font-display:swap}
+:root{
+  /* Charte ACE Club : un seul accent, le bleu du logo, texte sombre dessus. */
+  --fond:#07090F; --carte:#0E121C; --carte-2:#141927;
+  --ligne:rgba(242,244,248,.09); --ligne-2:rgba(242,244,248,.16);
+  --texte:#F2F4F8; --texte-2:#C9D1E3; --gris:#98A2B6;
+  --accent:#7C9CFF; --accent-survol:#95B0FF; --sur-accent:#07090F;
+  --erreur:#FFA3A3;
+  --f-titre:'Archivo', system-ui, sans-serif;
+  --f-texte:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--fond);color:var(--texte);font:500 15px/1.5 var(--f-texte);-webkit-font-smoothing:antialiased}
+main{max-width:980px;margin:0 auto;padding:28px 16px 64px}
+.logo{display:block;height:28px;width:auto;margin-bottom:18px}
+h1,h2{margin:0;font-family:var(--f-titre);font-weight:800;font-stretch:112%;letter-spacing:-.02em;line-height:1.16}
+h1{font-size:clamp(30px,8vw,46px)}
+h2{font-size:20px}
+.maj{margin:6px 0 0;color:var(--gris);font-size:13px}
+section{margin-top:32px}
+.deux{display:grid;gap:16px;align-items:start}
+@media (min-width:820px){.deux{grid-template-columns:1fr 1fr}}
+.carte{background:var(--carte);border:1px solid var(--ligne);border-radius:16px;padding:18px 16px}
+.carte h2{margin-bottom:12px}
+.pile{display:grid;gap:16px}
+.defile{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11px;font-weight:600;color:var(--gris);text-align:right;padding:6px 6px;white-space:nowrap;border-bottom:1px solid var(--ligne)}
+td{text-align:right;padding:10px 6px;border-bottom:1px solid var(--ligne);white-space:nowrap;color:var(--texte-2)}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+th:last-child,td:last-child{padding-right:0}
+tr:last-child td{border-bottom:0}
+tr.total td{font-weight:700;color:var(--texte)}
+.barre{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.filtres{display:flex;flex-wrap:wrap;gap:8px}
+button,select,input{font:inherit;color:inherit}
+.pill{min-height:40px;padding:0 14px;border-radius:99px;border:1px solid var(--ligne-2);background:var(--carte);cursor:pointer;font-size:13.5px;font-weight:600}
+.pill:hover{border-color:var(--accent)}
+.pill.principal{background:var(--accent);border-color:var(--accent);color:var(--sur-accent)}
+.pill.principal:hover{background:var(--accent-survol)}
+select,input[type=date]{min-height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--ligne-2);background:var(--carte);font-size:14px;color-scheme:dark}
+.dates{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13.5px;color:var(--gris)}
+.dates[hidden]{display:none}
+.vide{color:var(--gris);padding:14px 0;margin:0}
+.note{margin-top:28px;color:var(--gris);font-size:12.5px;line-height:1.6}
+.erreur{margin-top:24px;padding:14px 16px;border-radius:12px;background:var(--carte-2);border:1px solid var(--ligne-2);color:var(--erreur)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="img/logo-ace.svg" alt="ACE Club">
+  <h1>Rapport des leads</h1>
+  <p class="maj" id="maj">Chargement…</p>
+  <div class="erreur" id="erreur" role="alert" hidden></div>
+
+  <div id="contenu" hidden>
+    <section class="deux">
+      <div class="carte"><h2>Aujourd'hui</h2><div class="defile" id="auj"></div></div>
+      <div class="carte"><h2>Ce mois-ci</h2><div class="defile" id="mois"></div></div>
+    </section>
+
+    <section>
+      <div class="barre">
+        <h2>Détail</h2>
+        <button type="button" class="pill principal" id="export">Télécharger pour Excel</button>
+      </div>
+      <div class="barre">
+        <div class="filtres">
+          <select id="periode" aria-label="Période">
+            <option value="mois">Ce mois-ci</option>
+            <option value="precedent">Mois dernier</option>
+            <option value="7">7 derniers jours</option>
+            <option value="30">30 derniers jours</option>
+            <option value="choix">Dates au choix</option>
+          </select>
+          <div class="dates" id="dates" hidden>
+            <input type="date" id="du" aria-label="Du"> au <input type="date" id="au" aria-label="Au">
+          </div>
+        </div>
+      </div>
+      <div class="deux">
+        <div class="pile">
+          <div class="carte"><h2>Par offre</h2><div class="defile" id="formules"></div></div>
+          <div class="carte"><h2>Par source</h2><div class="defile" id="origines"></div></div>
+        </div>
+        <div class="carte"><h2>Jour par jour</h2><div class="defile" id="jours"></div></div>
+      </div>
+    </section>
+
+    <p class="note">Leads de la page de vente ACE Club, heure de Paris. Un lead compte le jour où il arrive, une vente et son cash le jour où la vente est conclue : un lead d'hier vendu aujourd'hui compte dans les ventes d'aujourd'hui. Le taux = ventes ÷ leads reçus sur la période. Ventes et cash viennent de ce que les setters saisissent dans le CRM.</p>
+  </div>
+</main>
+
+<script>
+/* Les mêmes que dans index.html. [À FOURNIR : projet Supabase d'ACE Club]
+   La clé anon est publique par conception : le rapport ne lit rien sans
+   la clé du lien (rapport_pages vérifie son empreinte). */
+var SUPABASE_URL = 'https://bkxuhkxcdeaqanugugpa.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJreHVoa3hjZGVhcWFudWd1Z3BhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzODgwMjksImV4cCI6MjExMDk2NDAyOX0.OnYg_t-V8Kdwq7npHG2C_aewMIywVHkFCb_MDMJc6pI';
+
+/* La clé est après le # : elle ne part jamais dans une requête vers le site. */
+var CLE = decodeURIComponent(location.hash.slice(1));
+var $ = function(id){ return document.getElementById(id); };
+var FORMULES = [['monthly', 'Mensuel Builder'], ['yearly', 'Annuel Starter'], ['yearly_builder', 'Annuel Builder']];
+var detail = null, bornes = null;
+
+function jourParis(d){
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris', year:'numeric', month:'2-digit', day:'2-digit' }).format(d || new Date());
+}
+function decaler(jour, n){
+  var d = new Date(jour + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+function rapport(du, au){
+  return fetch(SUPABASE_URL + '/rest/v1/rpc/rapport_pages', {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_cle: CLE, p_du: du, p_au: au })
+  }).then(function(r){
+    return r.json().then(function(j){ if (!r.ok) throw new Error(j.message || 'Erreur'); return j; });
+  });
+}
+function nb(n){ return Number(n || 0).toLocaleString('fr-FR'); }
+function usd(n){ return '$' + Number(n || 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 }); }
+function usdCts(n){ return '$' + Number(n || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function taux(v, l){ return l ? Math.round(v / l * 100) + ' %' : '–'; }
+function echap(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+function libelleSource(s){
+  var noms = { tiktok: 'TikTok', youtube: 'YouTube', direct: 'Direct' };
+  if (noms[s]) return noms[s];
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function resume(id, r){
+  var t = r.total;
+  $(id).innerHTML = '<table><thead><tr><th>Leads</th><th>Appelés</th><th>Ventes</th><th>Cash</th><th>Taux</th></tr></thead><tbody>' +
+    '<tr class="total"><td>' + nb(t.leads) + '</td><td>' + nb(t.appeles) + '</td><td>' + nb(t.ventes) + '</td><td>' + usd(t.cash) + '</td><td>' + taux(t.ventes, t.leads) + '</td></tr>' +
+    '</tbody></table>';
+}
+function rendreDetail(){
+  var r = detail; if (!r) return;
+  var lignes = r.origines.slice().sort(function(a, b){ return b.leads - a.leads; });
+  $('origines').innerHTML = lignes.length
+    ? '<table><thead><tr><th>Source</th><th>Leads</th><th>Ventes</th><th>Cash</th></tr></thead><tbody>' + lignes.map(function(s){
+        return '<tr><td>' + echap(libelleSource(s.origine)) + '</td><td>' + nb(s.leads) + '</td><td>' + nb(s.ventes) + '</td><td>' + usd(s.cash) + '</td></tr>';
+      }).join('') + '</tbody></table>'
+    : '<p class="vide">Aucun lead sur cette période.</p>';
+
+  var parFormule = FORMULES.map(function(f){
+    var v = r.formules.filter(function(x){ return x.formule === f[0]; })[0] || {};
+    return { nom: f[1], ventes: +v.ventes || 0, cash: +v.cash || 0, commissions: +v.commissions || 0 };
+  });
+  $('formules').innerHTML = '<table><thead><tr><th>Offre</th><th>Ventes</th><th>Cash</th><th>Setters</th></tr></thead><tbody>' + parFormule.map(function(f){
+    return '<tr><td>' + f.nom + '</td><td>' + nb(f.ventes) + '</td><td>' + usd(f.cash) + '</td><td>' + usdCts(f.commissions) + '</td></tr>';
+  }).join('') + '</tbody></table>';
+
+  var html = (r.jours || []).map(function(j){
+    var d = new Date(j.jour + 'T12:00:00Z').toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', timeZone:'UTC' });
+    return '<tr><td>' + d + '</td><td>' + nb(j.leads) + '</td><td>' + nb(j.appeles) + '</td><td>' + nb(j.ventes) + '</td><td>' + usd(j.cash) + '</td></tr>';
+  }).join('');
+  $('jours').innerHTML = '<table><thead><tr><th>Jour</th><th>Leads</th><th>Appelés</th><th>Ventes</th><th>Cash</th></tr></thead><tbody>' + html + '</tbody></table>';
+}
+function periode(){
+  var v = $('periode').value, auj = jourParis();
+  $('dates').hidden = v !== 'choix';
+  if (v === 'mois') return [auj.slice(0, 8) + '01', auj];
+  if (v === '7') return [decaler(auj, -6), auj];
+  if (v === '30') return [decaler(auj, -29), auj];
+  if (v === 'precedent'){
+    var fin = decaler(auj.slice(0, 8) + '01', -1);
+    return [fin.slice(0, 8) + '01', fin];
+  }
+  return [$('du').value, $('au').value];
+}
+function chargerDetail(){
+  var b = periode();
+  if (!b[0] || !b[1] || b[1] < b[0]) return Promise.resolve();
+  bornes = b;
+  return rapport(b[0], b[1]).then(function(r){ detail = r; rendreDetail(); }).catch(montrerErreur);
+}
+function chargerTout(){
+  var auj = jourParis();
+  return Promise.all([rapport(auj, auj), rapport(auj.slice(0, 8) + '01', auj)]).then(function(x){
+    resume('auj', x[0]); resume('mois', x[1]);
+    $('contenu').hidden = false; $('erreur').hidden = true;
+    $('maj').textContent = 'Mis à jour à ' + new Date(x[0].maj).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit', timeZone:'Europe/Paris' }) + ' (heure de Paris)';
+    return chargerDetail();
+  }).catch(montrerErreur);
+}
+function montrerErreur(e){
+  $('maj').textContent = '';
+  $('erreur').hidden = false;
+  $('erreur').textContent = !SUPABASE_URL ? 'Configuration Supabase manquante.'
+    : /Clé invalide/.test(e.message) ? 'Ce lien n\'est pas valide.'
+    : 'Le rapport n\'a pas pu être chargé. Réessaie dans un instant.';
+}
+function exporter(){
+  if (!detail) return;
+  var L = [['Jour','Leads','Appelés','Ventes','Cash ($)'].join(';')];
+  detail.jours.slice().reverse().forEach(function(j){
+    L.push([j.jour, j.leads, j.appeles, j.ventes, j.cash].join(';'));
+  });
+  L.push(''); L.push(['Offre','Ventes','Cash ($)','Commissions setters ($)'].join(';'));
+  detail.formules.forEach(function(f){
+    var nom = (FORMULES.filter(function(x){ return x[0] === f.formule; })[0] || [f.formule, f.formule])[1];
+    L.push([nom, f.ventes, f.cash, f.commissions].join(';'));
+  });
+  L.push(''); L.push(['Source','Leads','Ventes','Cash ($)'].join(';'));
+  detail.origines.forEach(function(s){
+    L.push([libelleSource(s.origine).replace(/;/g, ','), s.leads, s.ventes, s.cash].join(';'));
+  });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + L.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = 'rapport-leads-ace-club-' + bornes[0] + '-au-' + bornes[1] + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+$('periode').addEventListener('change', chargerDetail);
+$('du').addEventListener('change', chargerDetail);
+$('au').addEventListener('change', chargerDetail);
+$('export').addEventListener('click', exporter);
+var auj0 = jourParis();
+$('du').value = auj0.slice(0, 8) + '01'; $('au').value = auj0;
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY){
+  montrerErreur(new Error('config'));
+} else if (!CLE){
+  montrerErreur(new Error('Clé invalide'));
+} else {
+  chargerTout();
+  setInterval(chargerTout, 120000);
+}
+</script>
+</body>
+</html>

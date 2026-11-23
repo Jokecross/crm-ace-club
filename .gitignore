@@ -1,0 +1,15 @@
+# Mots de passe et clés : jamais dans git, jamais en ligne.
+scripts/comptes.csv
+scripts/rapport-cle.txt
+scripts/*-cle.txt
+scripts/comptes-*.sql
+scripts/compte-admin.sql
+.env
+.env.*
+.vercel
+supabase/.temp/
+sauvegardes/
+.DS_Store
+node_modules/
+scripts/installation-complete.sql
+scripts/equipe.json
