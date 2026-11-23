@@ -13,3 +13,4 @@ sauvegardes/
 node_modules/
 scripts/installation-complete.sql
 scripts/equipe.json
+scripts/installation-*.sql
